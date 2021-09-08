@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/adhiardiansyah/goshop/app/database/seeders"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -35,6 +36,7 @@ func (server *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 
 	server.initializeDB(dbConfig)
 	server.initializeRoutes()
+	seeders.DBSeed(server.DB)
 }
 
 func (server *Server) Run(addr string) {
