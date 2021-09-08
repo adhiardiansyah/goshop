@@ -1,7 +1,7 @@
 package seeders
 
 import (
-	"github.com/adhiardiansyah/goshop/app/fakers"
+	"github.com/adhiardiansyah/goshop/app/database/fakers"
 	"gorm.io/gorm"
 )
 
