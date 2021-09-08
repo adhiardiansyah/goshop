@@ -33,6 +33,16 @@ type DBConfig struct {
 func (server *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 	fmt.Println("Welcome to " + appConfig.AppName)
 
+	server.initializeDB(dbConfig)
+	server.initializeRoutes()
+}
+
+func (server *Server) Run(addr string) {
+	fmt.Println("Listening to port", addr)
+	log.Fatal(http.ListenAndServe(addr, server.Router))
+}
+
+func (server *Server) initializeDB(dbConfig DBConfig) {
 	var err error
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8&parseTime=True&loc=Local", dbConfig.DBUser, dbConfig.DBPass, dbConfig.DBHost, dbConfig.DBName)
 	server.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -40,13 +50,14 @@ func (server *Server) Initialize(appConfig AppConfig, dbConfig DBConfig) {
 		panic("Failed on connecting to the database server")
 	}
 
-	server.Router = mux.NewRouter()
-	server.initializeRoutes()
-}
+	for _, model := range RegisterModels() {
+		err = server.DB.Debug().AutoMigrate(model.Model)
 
-func (server *Server) Run(addr string) {
-	fmt.Println("Listening to port", addr)
-	log.Fatal(http.ListenAndServe(addr, server.Router))
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	fmt.Println("Database migrated successfully.")
 }
 
 func getEnv(key, fallback string) string {
