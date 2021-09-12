@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/adhiardiansyah/goshop/app/models"
 	"github.com/gorilla/sessions"
 	// "github.com/unrolled/render"
 )
@@ -75,4 +76,12 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	session.Options.MaxAge = -1
 	session.Save(r, w)
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
+func Products(w http.ResponseWriter, r *http.Request) {
+	var productModel models.Product
+	products, _ := productModel.FindAll()
+	data := products
+	ParseTemplates()
+	tpl.ExecuteTemplate(w, "products.html", data)
 }

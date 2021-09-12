@@ -15,6 +15,7 @@ func (server *Server) initializeRoutes() {
 	server.Router.HandleFunc("/processlogin", controllers.ProcessLogin).Methods("POST")
 	server.Router.HandleFunc("/welcome", middleware.LoginMiddleware(controllers.Welcome)).Methods("GET")
 	server.Router.HandleFunc("/logout", controllers.Logout).Methods("GET")
+	server.Router.HandleFunc("/products", controllers.Products).Methods("GET")
 
 	staticFileDirectory := http.Dir("./assets")
 	staticFileHandler := http.StripPrefix("/public", http.FileServer(staticFileDirectory))

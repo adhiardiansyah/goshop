@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"github.com/adhiardiansyah/goshop/app/database"
 	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
 )
@@ -26,4 +27,15 @@ type Product struct {
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	DeletedAt        gorm.DeletedAt
+}
+
+func (productModel Product) FindAll() ([]Product, error) {
+	db, err := database.GetDB()
+	if err != nil {
+		return nil, err
+	} else {
+		var products []Product
+		db.Find(&products)
+		return products, nil
+	}
 }
