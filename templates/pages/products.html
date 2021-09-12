@@ -1,7 +1,7 @@
 {{ template "header" }}
 
     <h3>Product List</h3>
-    <!-- {{ range $id, $product := .Product }}
+    
     <table border="1">
         <tr>
             <th>No</th>
@@ -11,6 +11,7 @@
             <th>Weight</th>
             <th>Short Description</th>
         </tr>
+        {{ range $id, $product := .Product }}
         <tr>
             <td>{{ $id }}</td>
             <td>{{ $product.Name }}</td>
@@ -19,6 +20,7 @@
             <td>{{ $product.Weight }}</td>
             <td>{{ $product.ShortDescription }}</td>
         </tr>
-    </table> -->
+        {{ end }}
+    </table>
 
 {{ template "footer" }}
